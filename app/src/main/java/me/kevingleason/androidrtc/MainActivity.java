@@ -27,6 +27,7 @@ import me.kevingleason.androidrtc.adapters.HistoryAdapter;
 import me.kevingleason.androidrtc.adt.HistoryItem;
 import me.kevingleason.androidrtc.util.Constants;
 
+//Class for committing ready
 
 public class MainActivity extends ListActivity {
     private SharedPreferences mSharedPreferences;
