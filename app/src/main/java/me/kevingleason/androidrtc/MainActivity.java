@@ -27,6 +27,7 @@ import me.kevingleason.androidrtc.adapters.HistoryAdapter;
 import me.kevingleason.androidrtc.adt.HistoryItem;
 import me.kevingleason.androidrtc.util.Constants;
 
+//Class for committing ready
 
 public class MainActivity extends ListActivity {
     private SharedPreferences mSharedPreferences;
@@ -64,7 +65,7 @@ public class MainActivity extends ListActivity {
 
         this.mHistoryAdapter = new HistoryAdapter(this, new ArrayList<HistoryItem>(), this.mPubNub);
         this.mHistoryList.setAdapter(this.mHistoryAdapter);
-
+// This is a test of git
 // code for testing communications between the app and dispatch
 
 //        final Pubnub pubnub = new Pubnub("pub-c-9d0d75a5-38db-404f-ac2a-884e18b041d8", "sub-c-4e25fb64-37c7-11e5-a477-0619f8945a4f");
