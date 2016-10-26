@@ -65,7 +65,7 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
         holder.message.setText(chatMsg.getMessage());
         holder.timeStamp.setText(formatTimeStamp(chatMsg.getTimeStamp()));
         holder.chatMsg=chatMsg;
-        setFadeOut3(convertView, chatMsg);
+        setFadeOut3(convertView, chatMsg);//This causes the messages to fade away
         return convertView;
     }
 
