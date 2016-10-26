@@ -33,6 +33,7 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //initializes a variable to store the username, allows the user to not have to sign in a second time
         mUsername = (EditText) findViewById(R.id.FirstName);
 
         //initializes each textfield to a variable to manipulate the text field from java code
@@ -41,6 +42,7 @@ public class LoginActivity extends Activity {
         Address = (EditText) findViewById(R.id.Address);
         City = (EditText) findViewById(R.id.City);
         ZipCode = (EditText) findViewById(R.id.ZipCode);
+        Age = (EditText) findViewById(R.id.Age);
         //Sets up the State text field to be auto-filled
         State = (AutoCompleteTextView) findViewById(R.id.State);
         String[] states = getResources().getStringArray(R.array.State_Array);
@@ -55,23 +57,14 @@ public class LoginActivity extends Activity {
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, genders);
         dropdown.setAdapter(adapter2);
 
-        Age = (EditText) findViewById(R.id.Age);
 
     }
 
 
     public void testButton (View view){
-//        FirstName.setText("Dan");
-//        LastName.setText("Silverio");
-//        Address.setText("600 S Clyde Morris Blvd");
-//        City.setText("Daytona Beach");
-//        ZipCode.setText("32114");
-//        State.setText("Fl");
-//        PhoneNumber.setText("8602219557");
-//        Race.setText("White");
-//        //Gender.setText("Male");
-//        Age.setText("20");
-//        return;
+        //when the app is opened for the first time the user enters all their information. After the information has been entered,
+        //it is stored and their first name is used as the username and stored so that in the future the user does not need to sign
+        //in
         String username = mUsername.getText().toString(); 
 
             SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);

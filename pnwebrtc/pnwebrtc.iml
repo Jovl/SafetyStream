@@ -99,5 +99,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="pubnub-android-3.7.4" level="project" />
     <orderEntry type="library" exported="" name="libjingle-9694" level="project" />
+    <orderEntry type="library" exported="" name="android-android-23" level="project" />
   </component>
 </module>
