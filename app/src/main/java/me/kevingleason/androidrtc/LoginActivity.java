@@ -7,6 +7,7 @@ import android.os.StrictMode;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import me.kevingleason.androidrtc.util.Constants;
@@ -41,7 +42,7 @@ public class LoginActivity extends Activity {
     private Spinner Gender;
     private EditText Age;
     private EditText mUsername;
-
+    private EditText Notes;
     // Declaring connection variables
     Connection con;
     String un,pass,db,ip;
@@ -75,35 +76,23 @@ public class LoginActivity extends Activity {
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, genders);
         dropdown.setAdapter(adapter2);
 
+        Notes = (EditText) findViewById(R.id.OtherNotes);
         Submit = (Button) findViewById(R.id.SubmitButton);
 
-        //TODO Fill in strings with actual names
         // Declaring Server ip, username, database name and password
-        ip = "your server ip here";
-        db = "your database name here";
-        un = "your username for that database here";
-        pass = "your password for that database here";
+        ip = "safetystream.database.windows.net";
+        db = "SafetyStream";
+        un = "michaelcain";
+        pass = "Password1";
         // Declaring Server ip, username, database name and password
-
-        // Setting up the function when button login is clicked
-        Submit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                CheckLogin checkLogin = new CheckLogin();// this is the Asynctask, which is used to process in background to reduce load on app process
-                checkLogin.execute("");
-            }
-        });
-        //End Setting up the function when button login is clicked
-
-
 
 
     }
 
     public class CheckLogin extends AsyncTask<String,String,String>
     {
+        private static final String TAG = "MyActivity";
+
         String z = "";
         Boolean isSuccess = false;
 
@@ -117,6 +106,7 @@ public class LoginActivity extends Activity {
         String phone = PhoneNumber.getText().toString();
         String race = Race.getText().toString();
         String gender = Gender.getSelectedItem().toString();
+        String notes = Notes.getText().toString();
 
         @Override
         protected String doInBackground(String... params)
@@ -124,14 +114,24 @@ public class LoginActivity extends Activity {
             //TODO Add conditional statements to validate data entry boudaries
                 try
                 {
+                    Log.v(TAG, "before");
+
                     con = connectionclass(un, pass, db, ip);        // Connect to database
+                    Statement stmt = con.createStatement();
+
+                    Log.v(TAG, "after");
+
                     if (con == null)
                     {
                         z = "Check Your Internet Access!";
+
                     }
                     else
                     {
-                        //TODO Figure out how to write to Database
+                        Log.v(TAG, "beforeUpdate");
+                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipcode + "', '" + phone + "', '" + race + "', '" + notes + "')";
+                        stmt.executeUpdate(query);
+                        Log.v(TAG, "AfterUpdate");
                     }
                 }
                 catch (Exception ex)
@@ -139,6 +139,7 @@ public class LoginActivity extends Activity {
                     isSuccess = false;
                     z = ex.getMessage();
                 }
+            Log.v(TAG, z);
             return z;
         }
     }
@@ -153,7 +154,7 @@ public class LoginActivity extends Activity {
         try
         {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            ConnectionURL = "jdbc:jtds:sqlserver://" + server + database + ";user=" + user+ ";password=" + password + ";";
+            ConnectionURL = "jdbc:jtds:sqlserver://" + server + ";databaseName=" + database + ";user=" + user+ ";password=" + password + ";";
             connection = DriverManager.getConnection(ConnectionURL);
         }
         catch (SQLException se)
@@ -171,17 +172,20 @@ public class LoginActivity extends Activity {
         return connection;
     }
     public void testButton (View view){
+        CheckLogin checkLogin = new CheckLogin();// this is the Asynctask, which is used to process in background to reduce load on app process
+        checkLogin.execute("");
+
         //when the app is opened for the first time the user enters all their information. After the information has been entered,
         //it is stored and their first name is used as the username and stored so that in the future the user does not need to sign
         //in
-        String username = mUsername.getText().toString(); 
+        String username = mUsername.getText().toString();
 
-            SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
-            SharedPreferences.Editor edit = sp.edit();
-            edit.putString(Constants.USER_NAME, username);
-            edit.apply();
+        SharedPreferences sp = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString(Constants.USER_NAME, username);
+        edit.apply();
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
