@@ -59,7 +59,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //initializes a variable to store the first naem as the username
+        //initializes a variable to store the first name as the username
         mUsername = (EditText) findViewById(R.id.FirstName);
 
         //initializes the variables created for each text field to that text field
@@ -103,9 +103,6 @@ public class LoginActivity extends Activity {
         //string used to hold any error messages for information that may be entered wrong or if the
         //connection to the database cannot be made
         String z = "";
-        Boolean[] success = new Boolean[10];
-        Boolean inputCorrect = true;
-        int i = 0;
 
         //initializes variables that will store the information that is inputted into the text fields
         String fName = FirstName.getText().toString();
@@ -126,29 +123,6 @@ public class LoginActivity extends Activity {
         protected String doInBackground(String... params)
         {
             Looper.prepare();
-
-            //goes through and checks all input fields against their specific requirements
-            success[0] = checkCharOnlyInputs(fName, FirstName);
-            success[1] = checkCharOnlyInputs(lName, LastName);
-            success[2] = checkCharOnlyInputs(city, City);
-            success[3] = checkCharOnlyInputs(race, Race);
-            success[4] = checkZipCode(zipCode, ZipCode);
-            success[5] = checkPhone(phone, PhoneNumber);
-            success[6] = checkOtherInputs(address, Address);
-            success[7] = checkOtherInputs(age, Age);
-            success[8] = checkState(state, State);
-            success[9] = checkGender(gender, Gender);
-
-            //goes through the array to see if any of the check methods returned false, indicating an invalid input
-            for(i = 0; i < success.length; i++){
-                if(success[i] == false){
-                    //if any array element is equal to false then the inputCorrect is set to false to prevent the information
-                    //from being sent to the databse
-                    inputCorrect = false;
-                    i = success.length;
-                }
-            }
-            if(inputCorrect == true){
                 try
                 {
                     ///Connects to database
@@ -176,10 +150,8 @@ public class LoginActivity extends Activity {
                     z = ex.getMessage();
                 }
                 LoginSuccess();
-            }
-            else{
-                z = "Not all Inputs were entered correctly";
-            }
+
+
 
             if(z != "") {
                 //if z is equal to a different string an error was found and the button is set to be clickable again
@@ -229,13 +201,57 @@ public class LoginActivity extends Activity {
 
     //this method is linked to the submit button on the login screen, when that button is clicked this method is called
     public void testButton (View view){
+        Boolean[] success = new Boolean[10];
+        Boolean inputCorrect = true;
+        int i = 0;
+
+
         //sets the submit button so it cannot be clicked multiple times to prevent the user from sending multiple
         //entries to the database
         setSubmitClickable(false);
 
-        //begins the singIn method to send the information to the database
-        signIn signIn = new signIn();// this is the Asynctask, which is used to process in background to reduce load on app process
-        signIn.execute("");
+        String fName = FirstName.getText().toString();
+        String lName = LastName.getText().toString();
+        String address = Address.getText().toString();
+        String city = City.getText().toString();
+        String zipCode = ZipCode.getText().toString();
+        String age = Age.getText().toString();
+        String state = State.getText().toString();
+        String phone = PhoneNumber.getText().toString();
+        String race = Race.getText().toString();
+        String gender = Gender.getSelectedItem().toString();
+        String notes = Notes.getText().toString();
+
+        //goes through and checks all input fields against their specific requirements
+        success[0] = checkCharOnlyInputs(fName, FirstName);
+        success[1] = checkCharOnlyInputs(lName, LastName);
+        success[2] = checkCharOnlyInputs(city, City);
+        success[3] = checkCharOnlyInputs(race, Race);
+        success[4] = checkZipCode(zipCode, ZipCode);
+        success[5] = checkPhone(phone, PhoneNumber);
+        success[6] = checkOtherInputs(address, Address);
+        success[7] = checkOtherInputs(age, Age);
+        success[8] = checkState(state, State);
+        success[9] = checkGender(gender, Gender);
+
+        //goes through the array to see if any of the check methods returned false, indicating an invalid input
+        for(i = 0; i < success.length; i++){
+            if(success[i] == false){
+                //if any array element is equal to false then the inputCorrect is set to false to prevent the information
+                //from being sent to the databse
+                inputCorrect = false;
+                i = success.length;
+            }
+        }
+
+        if(inputCorrect == true) {
+
+            //begins the singIn method to send the information to the database
+            signIn signIn = new signIn();// this is the Asynctask, which is used to process in background to reduce load on app process
+            signIn.execute("");
+        }else {
+            setSubmitClickable(true);
+        }
     }
 
     public void LoginSuccess(){
@@ -257,25 +273,22 @@ public class LoginActivity extends Activity {
     public Boolean checkCharOnlyInputs (String input, EditText textField){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
         String message = null;
 
         if(input == null || input.isEmpty()){
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            //TODO figure out how to change background color
-            //textField.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
         }
         else{
-
             for(char c : input.toCharArray()){
                 if(Character.isDigit(c)){
                     //if a number is entered into the string then a message is recorded alerting the user
                     //that that field cannot contain strings, the text field is also turned to red
+                    //TODO figure out the way to reference the text field
                     message = "Your " + textField + " cannot contain numbers";
-                    //TODO figure out how to change background color
-                    //textField.setBackgroundColor(Color.RED);
+                    textField.setBackgroundColor(Color.RED);
                 }
             }
         }
@@ -296,34 +309,47 @@ public class LoginActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         String message = null;
-
-        if(5 == input.length()){
-            return true;
-        } else {
-            message = "The" + textfield + "is too short. \n It must be 5 digits long";
-            //TODO figure out how to change background color
-            //textfield.setBackgroundColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-            toast.show();
+        if(input == null || input.isEmpty()){
+            //if the string is empty then a message is recorded alerting the user that
+            //they must fill in all text fields, the color of the corresponding text field is turned to red
+            message = "Please fill in all text fields";
+            textfield.setBackgroundColor(Color.RED);
             return false;
+        }else
+        {
+            if(5 == input.length()){
+                return true;
+            }else {
+                message = "The Zip Code is too short. \n It must be 5 digits long";
+                textfield.setBackgroundColor(Color.RED);
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            }
         }
     }
 
     //this method is used to check the length of the phone number
     public Boolean checkPhone(String input, EditText textfield){
         String message = null;
-
-        if(10 == input.length()){
-            return true;
-        } else {
-            message = "The" + textfield + "is too short. \n It must be 5 digits long";
-            //TODO figure out how to change background color
-            //textfield.setBackgroundColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-            toast.show();
+        if(input == null || input.isEmpty()){
+            //if the string is empty then a message is recorded alerting the user that
+            //they must fill in all text fields, the color of the corresponding text field is turned to red
+            message = "Please fill in all text fields";
+            textfield.setBackgroundColor(Color.RED);
             return false;
         }
-
+        else{
+            if(10 == input.length()){
+                return true;
+            } else {
+                message = "The Phone Number is too short. \n It must be 10 digits long";
+                textfield.setBackgroundColor(Color.RED);
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            }
+        }
     }
 
     //this method is used to ensure that other text fields are filled in and not left blank
@@ -332,15 +358,24 @@ public class LoginActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         String message = null;
-        if(input == null || input == ""){
+
+        if(input == null || input.isEmpty()){
+            //if the string is empty then a message is recorded alerting the user that
+            //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            //TODO figure out how to change background color
-            //textfield.setBackgroundColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-            toast.show();
+            textfield.setBackgroundColor(Color.RED);
             return false;
-        } else {
-            return true;
+        }
+        else {
+            if (input == null || input == "") {
+                message = "Please fill in all text fields";
+                textfield.setBackgroundColor(Color.RED);
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -350,15 +385,23 @@ public class LoginActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         String message = null;
-        if(input == null){
+        if(input == "Gender" || input.isEmpty()){
+            //if the string is empty then a message is recorded alerting the user that
+            //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            //TODO figure out how to change background color
-            //field.setBackgroundColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-            toast.show();
+            field.setBackgroundColor(Color.RED);
             return false;
-        } else {
-            return true;
+        }
+        else {
+            if (input == null) {
+                message = "Please fill in all text fields";
+                field.setBackgroundColor(Color.RED);
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -366,17 +409,26 @@ public class LoginActivity extends Activity {
     public Boolean checkState(String input, AutoCompleteTextView field){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        String message = null;
 
-       String message = null;
-        if(input == null){
+
+        if(input == null || input.isEmpty()){
+            //if the string is empty then a message is recorded alerting the user that
+            //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            //TODO figure out how to change background color
-            //field.setBackgroundColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-            toast.show();
+            field.setBackgroundColor(Color.RED);
             return false;
-        } else {
-            return true;
+        }
+        else{
+            if(input == null){
+                message = "Please fill in all text fields";
+                field.setBackgroundColor(Color.RED);
+                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                toast.show();
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
