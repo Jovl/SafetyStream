@@ -274,6 +274,9 @@ public class LoginActivity extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String message = null;
+        boolean digit = false;
+        boolean splicerIndicator = false;
+        String textFieldName = "";
 
         if(input == null || input.isEmpty()){
             //if the string is empty then a message is recorded alerting the user that
@@ -282,18 +285,46 @@ public class LoginActivity extends Activity {
             textField.setBackgroundColor(Color.RED);
         }
         else{
+            //looks through the input to see if any of the characters are digits
             for(char c : input.toCharArray()){
-                if(Character.isDigit(c)){
-                    //if a number is entered into the string then a message is recorded alerting the user
-                    //that that field cannot contain strings, the text field is also turned to red
-                    //TODO figure out the way to reference the text field
-                    message = "Your " + textField + " cannot contain numbers";
-                    textField.setBackgroundColor(Color.RED);
+                if(Character.isDigit(c) ){
+                    //if a digit is found, a variable is flagged
+                   digit = true;
                 }
+            }
+
+            //if a number is entered into the string then a message is recorded alerting the user
+            //that that field cannot contain strings, the text field is also turned to red
+
+            if(digit == true){
+                //converts the stored reference location of the textField to a string
+                String field = textField.toString();
+                //looks throught the reference location of the string
+                for(char c2: field.toCharArray()){
+                    //if a } is found then that is the end of the reference location and that character will not be recorded
+                    if (Character.toString(c2).compareTo("}") == 0) {
+                        splicerIndicator = false;
+                    }
+                    //if the splicerIndicator is true then the reference location string is in the portion specifying the name of the textfield so those characters
+                    //are added to a variable storing the name of the text field
+                    if(splicerIndicator == true){
+                        textFieldName += Character.toString(c2);
+                    }
+                    //if the character is a / then this is the portion of the reference location just before the name of the text field, so the next character will
+                    //be recorded
+                    if (Character.toString(c2).compareTo("/") == 0) {
+                        splicerIndicator = true;
+                    }
+                }
+                //a message is recorded and the textfield is changed to be a red color
+                message = "Your " + textFieldName + " cannot contain numbers";
+                textField.setBackgroundColor(Color.RED);
             }
         }
 
         if(message == null){
+            //if the message is null then to error was found
+            textField.setBackgroundColor(Color.TRANSPARENT);
             return true;
         }else {
             //displays the message to the user
@@ -304,7 +335,7 @@ public class LoginActivity extends Activity {
     }
 
     //this method is used to check the length of the ZipCode
-    public Boolean checkZipCode(String input, EditText textfield){
+    public Boolean checkZipCode(String input, EditText textField){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -313,15 +344,19 @@ public class LoginActivity extends Activity {
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            textfield.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
             return false;
         }else
         {
             if(5 == input.length()){
+                //if the length is 5 digits, then it is a valid zip code
+                textField.setBackgroundColor(Color.TRANSPARENT);
                 return true;
             }else {
-                message = "The Zip Code is too short. \n It must be 5 digits long";
-                textfield.setBackgroundColor(Color.RED);
+                //if the length is not 5 digits, then it is an invalid zip code. A message is recorded and displayed to the
+                //user, the corresponding text field is also changed to be red
+                message = "The Zip Code is not Valid. \n It must be 5 digits long";
+                textField.setBackgroundColor(Color.RED);
                 Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                 toast.show();
                 return false;
@@ -330,21 +365,25 @@ public class LoginActivity extends Activity {
     }
 
     //this method is used to check the length of the phone number
-    public Boolean checkPhone(String input, EditText textfield){
+    public Boolean checkPhone(String input, EditText textField){
         String message = null;
         if(input == null || input.isEmpty()){
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            textfield.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
             return false;
         }
         else{
             if(10 == input.length()){
+                //if the length is 10 digits then it is a valid phone number
+                textField.setBackgroundColor(Color.TRANSPARENT);
                 return true;
             } else {
-                message = "The Phone Number is too short. \n It must be 10 digits long";
-                textfield.setBackgroundColor(Color.RED);
+                //if the length is not 10 digits, then it is an invalid phone number. A message is recorded and displayed to the
+                //user, the corresponding text field is also changed to be red
+                message = "The Phone Number is not Valid. \n It must be 10 digits long";
+                textField.setBackgroundColor(Color.RED);
                 Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
                 toast.show();
                 return false;
@@ -353,87 +392,71 @@ public class LoginActivity extends Activity {
     }
 
     //this method is used to ensure that other text fields are filled in and not left blank
-    public Boolean checkOtherInputs(String input, EditText textfield){
+    public Boolean checkOtherInputs(String input, EditText textField){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         String message = null;
 
-        if(input == null || input.isEmpty()){
+        if(input == null || input.isEmpty())
+        {
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            textfield.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
             return false;
-        }
-        else {
-            if (input == null || input == "") {
-                message = "Please fill in all text fields";
-                textfield.setBackgroundColor(Color.RED);
-                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-                toast.show();
-                return false;
-            } else {
-                return true;
-            }
+        } else {
+            textField.setBackgroundColor(Color.TRANSPARENT);
+            return true;
         }
     }
 
     //this method is used to ensure that the gender field is not left blank
-    public Boolean checkGender(String input, Spinner field){
+    public Boolean checkGender(String input, Spinner textField){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         String message = null;
-        if(input == "Gender" || input.isEmpty()){
+        if(input == "Gender" || input.isEmpty() || input == null)
+        {
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            field.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
             return false;
-        }
-        else {
-            if (input == null) {
-                message = "Please fill in all text fields";
-                field.setBackgroundColor(Color.RED);
-                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-                toast.show();
-                return false;
-            } else {
-                return true;
-            }
+        } else {
+            textField.setBackgroundColor(Color.TRANSPARENT);
+            return true;
         }
     }
 
     //used to ensure that the state field is not left blank
-    public Boolean checkState(String input, AutoCompleteTextView field){
+    public Boolean checkState(String input, AutoCompleteTextView textField){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String message = null;
 
-
-        if(input == null || input.isEmpty()){
+        if(input == null || input.isEmpty())
+        {
             //if the string is empty then a message is recorded alerting the user that
             //they must fill in all text fields, the color of the corresponding text field is turned to red
             message = "Please fill in all text fields";
-            field.setBackgroundColor(Color.RED);
+            textField.setBackgroundColor(Color.RED);
+            Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+            toast.show();
             return false;
-        }
-        else{
-            if(input == null){
-                message = "Please fill in all text fields";
-                field.setBackgroundColor(Color.RED);
-                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
-                toast.show();
-                return false;
-            } else {
-                return true;
-            }
+        } else {
+            textField.setBackgroundColor(Color.TRANSPARENT);
+            return true;
         }
     }
 
     //method used to change the click-ability of the submit button
-    public void setSubmitClickable(Boolean current){
-        Submit.setClickable(current);
+    public void setSubmitClickable(Boolean set){
+        Submit.setClickable(set);
     }
 }
