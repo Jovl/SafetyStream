@@ -2,6 +2,7 @@ package me.kevingleason.androidrtc;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -9,6 +10,7 @@ import android.os.StrictMode;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
 import me.kevingleason.androidrtc.util.Constants;
@@ -116,7 +118,12 @@ public class LoginActivity extends Activity {
         String race = Race.getText().toString();
         String gender = Gender.getSelectedItem().toString();
         String notes = Notes.getText().toString();
-        String imei ="";
+
+
+        // allows access to sensitive information about a specific device
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        // used to receive the phone's IMEI number
+        String imei = telephonyManager.getDeviceId();
 
         //method that will connect to the database and then write the account information to the database in the
         //proper format
@@ -140,7 +147,7 @@ public class LoginActivity extends Activity {
                     {
                         //if con returns the connection string, then the connection was made
                         //query holds the information that will be uploaded to the database in proper format
-                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "')";
+                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei + "')";
 
                         //sends the query string to the database
                         stmt.executeUpdate(query);
