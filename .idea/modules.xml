@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SE300.iml" filepath="$PROJECT_DIR$/SE300.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Safety Stream.iml" filepath="$PROJECT_DIR$/Safety Stream.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pnwebrtc/pnwebrtc.iml" filepath="$PROJECT_DIR$/pnwebrtc/pnwebrtc.iml" />
     </modules>
