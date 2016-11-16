@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,6 +79,11 @@ public class VideoChatActivity extends ListActivity {
     private boolean backPressed = false;
     private Thread  backPressedThread = null;
 
+    // allows access to sensitive information about a specific device
+    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+    // used to receive the phone's IMEI number
+    private String imei = telephonyManager.getDeviceId();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +132,7 @@ public class VideoChatActivity extends ListActivity {
 
         // for the toggle video button
         // ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        VideoCapturer capturer = VideoCapturerAndroid.create(backFacingCam);
+        VideoCapturer capturer = VideoCapturerAndroid.create(frontFacingCam);
 
         // First create a Video Source, then we can make a Video Track
         localVideoSource = pcFactory.createVideoSource(capturer, this.pnRTCClient.videoConstraints());
@@ -177,6 +183,7 @@ public class VideoChatActivity extends ListActivity {
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(final Location location) {
@@ -197,11 +204,13 @@ public class VideoChatActivity extends ListActivity {
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
+
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }
 
                                 pubnub.publish("my_channel", gpsMessage, new Callback() {});
+                                pubnub.publish("IMEI", imei, new Callback() {});
                             }
 
                             @Override
@@ -417,8 +426,8 @@ public class VideoChatActivity extends ListActivity {
                         if(remoteStream.audioTracks.size()==0 || remoteStream.videoTracks.size()==0) return;
                         mCallStatus.setVisibility(View.GONE);
                         remoteStream.videoTracks.get(0).addRenderer(new VideoRenderer(remoteRender));
-                        VideoRendererGui.update(remoteRender, 0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
-                        VideoRendererGui.update(localRender, 72, 65, 25, 25, VideoRendererGui.ScalingType.SCALE_ASPECT_FIT, true);
+                        VideoRendererGui.update(localRender, 0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
+                        // VideoRendererGui.update(remoteRender, 72, 65, 25, 25, VideoRendererGui.ScalingType.SCALE_ASPECT_FIT, true);
                     }
                     catch (Exception e){ e.printStackTrace(); }
                 }
