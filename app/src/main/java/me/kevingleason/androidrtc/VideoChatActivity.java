@@ -84,6 +84,9 @@ public class VideoChatActivity extends ListActivity {
     // used to receive the phone's IMEI number
     // private String imei = telephonyManager.getDeviceId();
 
+    // TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +135,7 @@ public class VideoChatActivity extends ListActivity {
 
         // for the toggle video button
         // ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        VideoCapturer capturer = VideoCapturerAndroid.create(frontFacingCam);
+        VideoCapturer capturer = VideoCapturerAndroid.create(backFacingCam);
 
         // First create a Video Source, then we can make a Video Track
         localVideoSource = pcFactory.createVideoSource(capturer, this.pnRTCClient.videoConstraints());
@@ -200,11 +203,12 @@ public class VideoChatActivity extends ListActivity {
                                 // String gps = ("lat:" + location.getLatitude() + " "+"lng:"+location.getLongitude()).toString();
 
                                 JSONObject gpsMessage = new JSONObject();
+                                //String imei = telephonyManager.getDeviceId();
 
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
-
+                                    // gpsMessage.put("imei", imei);
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }
