@@ -16,15 +16,6 @@
         android:text="Please Fill in All the Applicable Fields"
         android:id="@+id/TopLabel" />
 
-    <Button
-        android:text="Submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/SubmitButton"
-        android:onClick="testButton"/>
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,9 +113,9 @@
         android:id="@+id/State"
         android:hint="State"
         android:width="100dp"
-        android:layout_marginEnd="12dp"
         android:layout_below="@+id/City"
-        android:layout_toStartOf="@+id/SubmitButton" />
+        android:layout_toStartOf="@+id/SubmitButton"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -146,6 +137,20 @@
         android:layout_marginTop="18dp"
         android:layout_below="@+id/TopLabel"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SubmitButton"
+        android:onClick="testButton"
+        android:layout_below="@+id/OtherNotes"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/pn_red"
+        android:textColor="@color/white"
+        android:shadowColor="@color/grey"
+        android:shadowDx="10" />
 
 </RelativeLayout>
 

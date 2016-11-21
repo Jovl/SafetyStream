@@ -80,9 +80,9 @@ public class VideoChatActivity extends ListActivity {
     private Thread  backPressedThread = null;
 
     // allows access to sensitive information about a specific device
-    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+    // TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
     // used to receive the phone's IMEI number
-    private String imei = telephonyManager.getDeviceId();
+    // private String imei = telephonyManager.getDeviceId();
 
 
     @Override
@@ -210,7 +210,7 @@ public class VideoChatActivity extends ListActivity {
                                 }
 
                                 pubnub.publish("my_channel", gpsMessage, new Callback() {});
-                                pubnub.publish("IMEI", imei, new Callback() {});
+                                // pubnub.publish("IMEI", imei, new Callback() {});
                             }
 
                             @Override

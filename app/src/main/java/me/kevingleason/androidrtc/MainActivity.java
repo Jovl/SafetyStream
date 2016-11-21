@@ -57,9 +57,9 @@ public class MainActivity extends ListActivity {
 
         this.mHistoryList = getListView();
         this.mCallNumET   = (EditText) findViewById(R.id.call_num);
-        this.mUsernameTV  = (TextView) findViewById(R.id.main_username);
+        // this.mUsernameTV  = (TextView) findViewById(R.id.main_username);
 
-        this.mUsernameTV.setText(this.username);
+        // this.mUsernameTV.setText(this.username);
         initPubNub();
 
         this.mHistoryAdapter = new HistoryAdapter(this, new ArrayList<HistoryItem>(), this.mPubNub);

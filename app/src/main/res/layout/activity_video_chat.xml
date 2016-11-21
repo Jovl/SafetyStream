@@ -31,12 +31,12 @@
         <EditText
             android:id="@+id/chat_input"
             android:textColor="#FFF"
-            android:backgroundTint="@color/pn_blue"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="4"
             android:textColorHint="@color/white"
-            android:hint="Enter Message..."/>
+            android:hint="Enter Message..."
+            android:background="#e52828" />
 
         <RelativeLayout
             android:layout_width="0dp"
