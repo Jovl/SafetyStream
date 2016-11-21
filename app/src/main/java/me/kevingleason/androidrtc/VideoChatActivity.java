@@ -79,10 +79,10 @@ public class VideoChatActivity extends ListActivity {
     private boolean backPressed = false;
     private Thread  backPressedThread = null;
 
-    // allows access to sensitive information about a specific device
-    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-    // used to receive the phone's IMEI number
-    private String imei = telephonyManager.getDeviceId();
+//    // allows access to sensitive information about a specific device
+//    TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+//    // used to receive the phone's IMEI number
+//    private String imei = telephonyManager.getDeviceId();
 
 
     @Override
@@ -132,7 +132,7 @@ public class VideoChatActivity extends ListActivity {
 
         // for the toggle video button
         // ToggleButton toggle = (ToggleButton) findViewById(R.id.toggleButton);
-        VideoCapturer capturer = VideoCapturerAndroid.create(frontFacingCam);
+        VideoCapturer capturer = VideoCapturerAndroid.create(backFacingCam);
 
         // First create a Video Source, then we can make a Video Track
         localVideoSource = pcFactory.createVideoSource(capturer, this.pnRTCClient.videoConstraints());
@@ -210,7 +210,7 @@ public class VideoChatActivity extends ListActivity {
                                 }
 
                                 pubnub.publish("my_channel", gpsMessage, new Callback() {});
-                                pubnub.publish("IMEI", imei, new Callback() {});
+                                // pubnub.publish("IMEI", imei, new Callback() {});
                             }
 
                             @Override
@@ -218,6 +218,7 @@ public class VideoChatActivity extends ListActivity {
                                 System.out.println("SUBSCRIBE : DISCONNECT on channel:" + channel
                                         + " : " + message.getClass() + " : "
                                         + message.toString());
+
                             }
 
                             public void reconnectCallback(String channel, Object message) {
@@ -426,8 +427,8 @@ public class VideoChatActivity extends ListActivity {
                         if(remoteStream.audioTracks.size()==0 || remoteStream.videoTracks.size()==0) return;
                         mCallStatus.setVisibility(View.GONE);
                         remoteStream.videoTracks.get(0).addRenderer(new VideoRenderer(remoteRender));
-                        VideoRendererGui.update(localRender, 0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, false);
-                        // VideoRendererGui.update(remoteRender, 72, 65, 25, 25, VideoRendererGui.ScalingType.SCALE_ASPECT_FIT, true);
+                        VideoRendererGui.update(remoteRender, 72, 65, 25, 25, VideoRendererGui.ScalingType.SCALE_ASPECT_FIT, false);
+                        VideoRendererGui.update(localRender, 0, 0, 100, 100, VideoRendererGui.ScalingType.SCALE_ASPECT_FILL, true);
                     }
                     catch (Exception e){ e.printStackTrace(); }
                 }
