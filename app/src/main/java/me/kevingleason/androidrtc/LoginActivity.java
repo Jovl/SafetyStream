@@ -2,6 +2,7 @@ package me.kevingleason.androidrtc;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -9,6 +10,7 @@ import android.os.StrictMode;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
 import me.kevingleason.androidrtc.util.Constants;
@@ -51,6 +53,7 @@ public class LoginActivity extends Activity {
     Statement stmt;
     String un,pass,db,ip;
 
+    private TelephonyManager telephonyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class LoginActivity extends Activity {
         toast.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
         //initializes a variable to store the first name as the username
         mUsername = (EditText) findViewById(R.id.FirstName);
@@ -116,7 +121,7 @@ public class LoginActivity extends Activity {
         String race = Race.getText().toString();
         String gender = Gender.getSelectedItem().toString();
         String notes = Notes.getText().toString();
-        String imei ="";
+        String imei = telephonyManager.getDeviceId();
 
         //method that will connect to the database and then write the account information to the database in the
         //proper format
@@ -140,7 +145,7 @@ public class LoginActivity extends Activity {
                     {
                         //if con returns the connection string, then the connection was made
                         //query holds the information that will be uploaded to the database in proper format
-                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "')";
+                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei + "')";
 
                         //sends the query string to the database
                         stmt.executeUpdate(query);
@@ -150,18 +155,17 @@ public class LoginActivity extends Activity {
                 {
                     z = ex.getMessage();
                 }
-                LoginSuccess();
 
 
-
-            if(z != "") {
+            if(z == "" || z == null) {
                 //if z is equal to a different string an error was found and the button is set to be clickable again
                 //since no information was sent to the database and the user must go back and fix their inputs
                 setSubmitClickable(true);
                 //displays the message to the user
                 Toast toast = Toast.makeText(LoginActivity.this, z, Toast.LENGTH_LONG);
                 toast.show();
-
+            }else{
+                LoginSuccess();
             }
             return z;
         }

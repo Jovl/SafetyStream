@@ -79,6 +79,9 @@ public class VideoChatActivity extends ListActivity {
     private boolean backPressed = false;
     private Thread  backPressedThread = null;
 
+//    private String imei;
+//    private TelephonyManager telephonyManager;
+
     // allows access to sensitive information about a specific device
     // TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
     // used to receive the phone's IMEI number
@@ -93,6 +96,9 @@ public class VideoChatActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+//        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+//        imei = telephonyManager.getDeviceId();
 
         Bundle extras = getIntent().getExtras();
         if (extras == null || !extras.containsKey(Constants.USER_NAME)) {
