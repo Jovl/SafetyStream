@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc;
+package me.kevingleason.webRTC;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -23,10 +23,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import me.kevingleason.androidrtc.adapters.HistoryAdapter;
-import me.kevingleason.androidrtc.adt.HistoryItem;
-import me.kevingleason.androidrtc.util.Constants;
+import me.kevingleason.androidrtc.R;
+import me.kevingleason.webRTC.adapters.HistoryAdapter;
+import me.kevingleason.webRTC.adt.HistoryItem;
+import me.kevingleason.webRTC.util.Constants;
 
+/*
+* Credit to Kevin Gleason, PubNub Software Evangelist,
+* for the creation of the pubnub WebRtc Library
+* and base file strusture of the project.
+*/
 
 public class MainActivity extends ListActivity {
     private SharedPreferences mSharedPreferences;

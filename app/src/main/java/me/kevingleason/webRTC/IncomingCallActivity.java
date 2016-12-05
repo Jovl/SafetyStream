@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc;
+package me.kevingleason.webRTC;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,12 +13,17 @@ import android.widget.Toast;
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import me.kevingleason.androidrtc.util.Constants;
+import me.kevingleason.androidrtc.R;
+import me.kevingleason.webRTC.util.Constants;
 import me.kevingleason.pnwebrtc.PnPeerConnectionClient;
 
+/*
+* Credit to Kevin Gleason, PubNub Software Evangelist,
+* for the creation of the pubnub WebRtc Library
+* and base file strusture of the project.
+*/
 
 public class IncomingCallActivity extends Activity {
     private SharedPreferences mSharedPreferences;

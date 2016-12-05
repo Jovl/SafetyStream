@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc.adapters;
+package me.kevingleason.webRTC.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,8 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+
 import me.kevingleason.androidrtc.R;
-import me.kevingleason.androidrtc.adt.ChatMessage;
+import me.kevingleason.webRTC.adt.ChatMessage;
 
 
 /**

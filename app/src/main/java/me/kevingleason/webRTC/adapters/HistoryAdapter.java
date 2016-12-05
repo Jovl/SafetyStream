@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc.adapters;
+package me.kevingleason.webRTC.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,18 +18,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import me.kevingleason.androidrtc.MainActivity;
 import me.kevingleason.androidrtc.R;
-import me.kevingleason.androidrtc.adt.ChatUser;
-import me.kevingleason.androidrtc.adt.HistoryItem;
-import me.kevingleason.androidrtc.util.Constants;
+import me.kevingleason.webRTC.MainActivity;
+import me.kevingleason.webRTC.adt.ChatUser;
+import me.kevingleason.webRTC.adt.HistoryItem;
+import me.kevingleason.webRTC.util.Constants;
 
 /**
  * Created by GleasonK on 7/31/15.

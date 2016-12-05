@@ -5,7 +5,6 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        // applicationId "me.kevingleason.androidrtc"
         minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
@@ -31,4 +30,5 @@ dependencies {
     compile 'io.pristine:libjingle:9694@aar'
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile project(':pnwebrtc')
+    compile project(':jtds-1.2.7')
 }

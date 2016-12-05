@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc.adt;
+package me.kevingleason.webRTC.adt;
 
 /**
  * Created by GleasonK on 6/25/15.

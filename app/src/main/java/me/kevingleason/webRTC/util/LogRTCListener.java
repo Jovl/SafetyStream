@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc.util;
+package me.kevingleason.webRTC.util;
 
 import android.util.Log;
 

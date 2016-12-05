@@ -1,12 +1,10 @@
-package me.kevingleason.androidrtc;
+package me.kevingleason.webRTC;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -14,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.AudioSource;
 import org.webrtc.AudioTrack;
-import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
 import org.webrtc.PeerConnectionFactory;
@@ -40,11 +36,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import me.kevingleason.androidrtc.adapters.ChatAdapter;
-import me.kevingleason.androidrtc.adt.ChatMessage;
-import me.kevingleason.androidrtc.servers.XirSysRequest;
-import me.kevingleason.androidrtc.util.Constants;
-import me.kevingleason.androidrtc.util.LogRTCListener;
+import me.kevingleason.androidrtc.R;
+import me.kevingleason.webRTC.adapters.ChatAdapter;
+import me.kevingleason.webRTC.adt.ChatMessage;
+import me.kevingleason.webRTC.servers.XirSysRequest;
+import me.kevingleason.webRTC.util.Constants;
+import me.kevingleason.webRTC.util.LogRTCListener;
 import me.kevingleason.pnwebrtc.PnPeer;
 import me.kevingleason.pnwebrtc.PnRTCClient;
 import me.kevingleason.pnwebrtc.PnSignalingParams;
@@ -52,9 +49,14 @@ import me.kevingleason.pnwebrtc.PnSignalingParams;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Location;
-import android.widget.ToggleButton;
 
 import com.pubnub.api.*;
+
+/*
+* Credit to Kevin Gleason, PubNub Software Evangelist,
+* for the creation of the pubnub WebRtc Library
+* and base file strusture of the project.
+*/
 
 /**
  * This chat will begin/subscribe to a video chat.
@@ -79,26 +81,11 @@ public class VideoChatActivity extends ListActivity {
     private boolean backPressed = false;
     private Thread  backPressedThread = null;
 
-//    private String imei;
-//    private TelephonyManager telephonyManager;
-
-    // allows access to sensitive information about a specific device
-    // TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-    // used to receive the phone's IMEI number
-    // private String imei = telephonyManager.getDeviceId();
-
-    // TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_chat);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-//        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-//        imei = telephonyManager.getDeviceId();
 
         Bundle extras = getIntent().getExtras();
         if (extras == null || !extras.containsKey(Constants.USER_NAME)) {
@@ -192,6 +179,8 @@ public class VideoChatActivity extends ListActivity {
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        final String imei = telephonyManager.getDeviceId();
 
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
@@ -209,18 +198,17 @@ public class VideoChatActivity extends ListActivity {
                                 // String gps = ("lat:" + location.getLatitude() + " "+"lng:"+location.getLongitude()).toString();
 
                                 JSONObject gpsMessage = new JSONObject();
-                                //String imei = telephonyManager.getDeviceId();
+
 
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
-                                    // gpsMessage.put("imei", imei);
+                                    gpsMessage.put("imei", imei);
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }
 
                                 pubnub.publish("my_channel", gpsMessage, new Callback() {});
-                                // pubnub.publish("IMEI", imei, new Callback() {});
                             }
 
                             @Override
@@ -249,6 +237,7 @@ public class VideoChatActivity extends ListActivity {
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
+                                    gpsMessage.put("imei", imei);
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }

@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc;
+package me.kevingleason.webRTC;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

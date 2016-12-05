@@ -1,6 +1,6 @@
-package me.kevingleason.androidrtc.adt;
+package me.kevingleason.webRTC.adt;
 
-import me.kevingleason.androidrtc.util.Constants;
+import me.kevingleason.webRTC.util.Constants;
 
 /**
  * Created by GleasonK on 7/31/15.

@@ -1,9 +1,8 @@
-package me.kevingleason.androidrtc.servers;
+package me.kevingleason.webRTC.servers;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;

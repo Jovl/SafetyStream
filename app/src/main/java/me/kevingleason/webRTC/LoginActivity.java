@@ -1,4 +1,4 @@
-package me.kevingleason.androidrtc;
+package me.kevingleason.webRTC;
 
 import android.app.Activity;
 import android.annotation.SuppressLint;
@@ -13,7 +13,9 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
-import me.kevingleason.androidrtc.util.Constants;
+
+import me.kevingleason.androidrtc.R;
+import me.kevingleason.webRTC.util.Constants;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
@@ -25,6 +27,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+* Credit to Kevin Gleason, PubNub Software Evangelist,
+* for the creation of the pubnub WebRtc Library
+* and base file strusture of the project.
+*/
 
 /**
  * Login Activity for the first time the app is opened, or when a user clicks the sign out button.
@@ -50,10 +57,10 @@ public class LoginActivity extends Activity {
 
     // Declaring connection variables for connecting to SQL database
     Connection con;
-    Statement stmt;
+    Statement stmt = null;
     String un,pass,db,ip;
 
-    private TelephonyManager telephonyManager;
+    //private TelephonyManager telephonyManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +68,6 @@ public class LoginActivity extends Activity {
         toast.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
         //initializes a variable to store the first name as the username
         mUsername = (EditText) findViewById(R.id.FirstName);
@@ -97,8 +102,6 @@ public class LoginActivity extends Activity {
         un = "michaelcain";
         pass = "Password1";
 
-
-
     }
 
 
@@ -121,6 +124,10 @@ public class LoginActivity extends Activity {
         String race = Race.getText().toString();
         String gender = Gender.getSelectedItem().toString();
         String notes = Notes.getText().toString();
+
+        // allows access to sensitive information about a specific device
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        // used to receive the phone's IMEI number
         String imei = telephonyManager.getDeviceId();
 
         //method that will connect to the database and then write the account information to the database in the
@@ -129,43 +136,51 @@ public class LoginActivity extends Activity {
         protected String doInBackground(String... params)
         {
             Looper.prepare();
+            System.out.println("We made it in the background");
                 try
                 {
                     ///Connects to database
                     con = connectionClass(un, pass, db, ip);
+                    System.out.println("We tried to connect to the database");
 
+                    System.out.println("start");
                     //sets up the object that will hold the information uploaded to the database.
                     stmt = con.createStatement();
+                    System.out.println("end");
                     if (con == null)
                     {
                         //if con returns as null then the connection could not be made
                         z = "Check Your Internet Access!";
+                        System.out.println(z);
                     }
                     else
                     {
                         //if con returns the connection string, then the connection was made
                         //query holds the information that will be uploaded to the database in proper format
                         String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei + "')";
-
+                        System.out.println("INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei + "')");
                         //sends the query string to the database
                         stmt.executeUpdate(query);
+                        System.out.println("This is a test");
                     }
                 }
                 catch (Exception ex)
                 {
                     z = ex.getMessage();
+                    System.out.println("This code sucks");
                 }
+            LoginSuccess();
 
 
-            if(z == "" || z == null) {
+
+            if(z != "") {
                 //if z is equal to a different string an error was found and the button is set to be clickable again
                 //since no information was sent to the database and the user must go back and fix their inputs
                 setSubmitClickable(true);
                 //displays the message to the user
                 Toast toast = Toast.makeText(LoginActivity.this, z, Toast.LENGTH_LONG);
                 toast.show();
-            }else{
-                LoginSuccess();
+
             }
             return z;
         }
