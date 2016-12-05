@@ -181,6 +181,7 @@ public class VideoChatActivity extends ListActivity {
 
         TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
         final String imei = telephonyManager.getDeviceId();
+        imei.substring(0, 6);
 
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {

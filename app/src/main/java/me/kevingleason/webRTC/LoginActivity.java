@@ -125,11 +125,6 @@ public class LoginActivity extends Activity {
         String gender = Gender.getSelectedItem().toString();
         String notes = Notes.getText().toString();
 
-        // allows access to sensitive information about a specific device
-        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
-        // used to receive the phone's IMEI number
-        String imei = telephonyManager.getDeviceId();
-
         //method that will connect to the database and then write the account information to the database in the
         //proper format
         @Override
@@ -137,6 +132,13 @@ public class LoginActivity extends Activity {
         {
             Looper.prepare();
             System.out.println("We made it in the background");
+
+            // allows access to sensitive information about a specific device
+            TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+            // used to receive the phone's IMEI number
+            final String imei = telephonyManager.getDeviceId();
+            imei.substring(0, 6);
+            
                 try
                 {
                     ///Connects to database
