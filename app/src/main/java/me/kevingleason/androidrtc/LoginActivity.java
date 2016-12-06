@@ -50,7 +50,7 @@ public class LoginActivity extends Activity {
 
     // Declaring connection variables for connecting to SQL database
     Connection con;
-    Statement stmt;
+    Statement stmt = null;
     String un,pass,db,ip;
 
     private TelephonyManager telephonyManager;
@@ -61,8 +61,6 @@ public class LoginActivity extends Activity {
         toast.show();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
 
         //initializes a variable to store the first name as the username
         mUsername = (EditText) findViewById(R.id.FirstName);
@@ -121,6 +119,10 @@ public class LoginActivity extends Activity {
         String race = Race.getText().toString();
         String gender = Gender.getSelectedItem().toString();
         String notes = Notes.getText().toString();
+
+        // allows access to sensitive information about a specific device
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        // used to receive the phone's IMEI number
         String imei = telephonyManager.getDeviceId();
 
         //method that will connect to the database and then write the account information to the database in the
@@ -145,7 +147,7 @@ public class LoginActivity extends Activity {
                     {
                         //if con returns the connection string, then the connection was made
                         //query holds the information that will be uploaded to the database in proper format
-                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei + "')";
+                        String query = "INSERT INTO Users VALUES ('" + fName + "', '" + lName + "', '" + gender + "', '" + age + "', '" + address + "', '" + city + "', '" + state + "', '" + zipCode + "', '" + phone + "', '" + race + "', '" + notes + "', '" + imei.substring(11) + "')";
 
                         //sends the query string to the database
                         stmt.executeUpdate(query);
@@ -155,6 +157,7 @@ public class LoginActivity extends Activity {
                 {
                     z = ex.getMessage();
                 }
+            LoginSuccess();
 
 
             if(z == "" || z == null) {
@@ -164,8 +167,6 @@ public class LoginActivity extends Activity {
                 //displays the message to the user
                 Toast toast = Toast.makeText(LoginActivity.this, z, Toast.LENGTH_LONG);
                 toast.show();
-            }else{
-                LoginSuccess();
             }
             return z;
         }

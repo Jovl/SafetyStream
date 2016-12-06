@@ -1,1 +1,1 @@
-include ':app', ':pnwebrtc'
+include ':app', ':pnwebrtc', ':jtds-1.2.7'

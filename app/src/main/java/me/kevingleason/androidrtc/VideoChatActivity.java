@@ -192,6 +192,8 @@ public class VideoChatActivity extends ListActivity {
         // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+        TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        final String imei = telephonyManager.getDeviceId();
 
         // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
@@ -214,7 +216,7 @@ public class VideoChatActivity extends ListActivity {
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
-                                    // gpsMessage.put("imei", imei);
+                                    gpsMessage.put("imei", imei.substring(11));
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }
@@ -249,6 +251,7 @@ public class VideoChatActivity extends ListActivity {
                                 try {
                                     gpsMessage.put("lat", location.getLatitude());
                                     gpsMessage.put("lng", location.getLongitude());
+                                    gpsMessage.put("imei", imei.substring(11));
                                 } catch (JSONException e) {
                                     System.out.println("Error converting to JSON");
                                 }

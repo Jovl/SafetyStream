@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Safety Stream.iml" filepath="$PROJECT_DIR$/Safety Stream.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SafetyStream.iml" filepath="$PROJECT_DIR$/SafetyStream.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jtds-1.2.7/jtds-1.2.7.iml" filepath="$PROJECT_DIR$/jtds-1.2.7/jtds-1.2.7.iml" />
       <module fileurl="file://$PROJECT_DIR$/pnwebrtc/pnwebrtc.iml" filepath="$PROJECT_DIR$/pnwebrtc/pnwebrtc.iml" />
     </modules>
   </component>
