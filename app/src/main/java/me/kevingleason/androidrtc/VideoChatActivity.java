@@ -56,6 +56,12 @@ import android.widget.ToggleButton;
 
 import com.pubnub.api.*;
 
+/*
+Credit to Kevin Gleason, Developer Evangelist @PubNub
+for creating the PubNub WebRTC library and for
+the basic project structure.
+ */
+
 /**
  * This chat will begin/subscribe to a video chat.
  * REQUIRED: The intent must contain a

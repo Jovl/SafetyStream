@@ -19,6 +19,11 @@ import org.json.JSONObject;
 import me.kevingleason.androidrtc.util.Constants;
 import me.kevingleason.pnwebrtc.PnPeerConnectionClient;
 
+/*
+Credit to Kevin Gleason, Developer Evangelist @PubNub
+for creating the PubNub WebRTC library and for
+the basic project structure.
+ */
 
 public class IncomingCallActivity extends Activity {
     private SharedPreferences mSharedPreferences;

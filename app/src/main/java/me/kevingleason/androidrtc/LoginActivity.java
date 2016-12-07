@@ -25,6 +25,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/*
+Credit to Kevin Gleason, Developer Evangelist @PubNub
+for creating the PubNub WebRTC library and for
+the basic project structure.
+ */
 
 /**
  * Login Activity for the first time the app is opened, or when a user clicks the sign out button.
